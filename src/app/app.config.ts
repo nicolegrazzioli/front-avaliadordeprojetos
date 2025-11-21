@@ -7,10 +7,9 @@ import {
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
-import {provideHttpClient} from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import {env} from '../environment/enviorenment';
-
-//configura a aplicaçao inteira
+import { authInterceptor } from '../core/security/auth-interceptor';
 
 export const ENV: Provider = {
   provide: 'ENV',
@@ -21,8 +20,8 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({ eventCoalescing: true }),
-    provideRouter(routes), //registra as rotas
-    provideHttpClient(), //para requisiçoes http (chamadas a uma API)
-    ENV //disponibiliza variaveis de ambiente - pega objeto ENV e torna injetavel
+    provideRouter(routes),
+    provideHttpClient(withInterceptors([authInterceptor])),
+    ENV
   ]
 };

@@ -1,11 +1,14 @@
 import { Routes } from '@angular/router';
-
-//diz qual componente carregar pela url
+import {homeGuard} from '../core/security/home-guard';
 
 export const routes: Routes = [
   {
-    path: '', //rota padrao (localhost:4200)
-    loadChildren: ()=> //lazy loading
+    path: '', loadChildren: ()=>
       import('../modules/root/root-module').then(m => m.RootModule)
   },
+  {
+    path: 'home', canActivate: [homeGuard],
+      loadChildren: ()=>
+        import('../modules/home/home-module').then(m => m.HomeModule)
+  }
 ];
