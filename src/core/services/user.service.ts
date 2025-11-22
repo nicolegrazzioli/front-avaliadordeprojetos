@@ -1,7 +1,7 @@
 import { Injectable, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Usuario, DadosUsuario } from '../models/user.model';
+import { Usuario, DadosUsuario } from '../models/usuario';
 
 @Injectable({
     providedIn: 'root'
@@ -11,6 +11,10 @@ export class UserService {
 
     constructor(private http: HttpClient, @Inject('ENV') private env: any) {
         this.apiUrl = `${this.env.apiUrl}/usuarios`;
+    }
+
+    findAll(): Observable<Usuario[]> {
+        return this.http.get<Usuario[]>(this.apiUrl);
     }
 
     findById(id: number): Observable<DadosUsuario> {

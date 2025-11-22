@@ -1,5 +1,5 @@
-import { Livro } from './book.model';
-import { Usuario } from './user.model';
+import { Livro } from './livro';
+import { Usuario } from './usuario';
 
 export interface Emprestimo {
     id?: number;

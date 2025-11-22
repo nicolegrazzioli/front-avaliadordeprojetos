@@ -1,5 +1,5 @@
 export interface DadosAutenticacao {
-    email: string;
+    login: string;
     senha: string;
 }
 

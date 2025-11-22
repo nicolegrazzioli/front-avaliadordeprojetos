@@ -5,19 +5,19 @@ import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { BookService } from '../../../core/services/book.service';
-import { Livro } from '../../../core/models/book.model';
+import { Livro } from '../../../core/models/livro';
 
 @Component({
-    selector: 'app-book-list',
-    standalone: true,
-    imports: [
-        CommonModule,
-        RouterModule,
-        MatTableModule,
-        MatButtonModule,
-        MatIconModule
-    ],
-    template: `
+  selector: 'app-book-list',
+  standalone: true,
+  imports: [
+    CommonModule,
+    RouterModule,
+    MatTableModule,
+    MatButtonModule,
+    MatIconModule
+  ],
+  template: `
     <div class="container-fluid">
       <div class="d-flex justify-content-between align-items-center mb-4">
         <h2>Livros</h2>
@@ -29,28 +29,32 @@ import { Livro } from '../../../core/models/book.model';
       <table mat-table [dataSource]="books" class="w-100 mat-elevation-z8">
         <ng-container matColumnDef="id">
           <th mat-header-cell *matHeaderCellDef> ID </th>
-          <td mat-cell *matCellDef="let book"> {{book.id}} </td>
+          <td mat-cell *matCellDef="let book"> {{book.idLiv}} </td>
         </ng-container>
 
         <ng-container matColumnDef="titulo">
           <th mat-header-cell *matHeaderCellDef> Título </th>
-          <td mat-cell *matCellDef="let book"> {{book.titulo}} </td>
+          <td mat-cell *matCellDef="let book"> {{book.tituloLiv}} </td>
         </ng-container>
 
         <ng-container matColumnDef="autor">
-          <th mat-header-cell *matHeaderCellDef> Autor </th>
-          <td mat-cell *matCellDef="let book"> {{book.autor}} </td>
+          <th mat-header-cell *matHeaderCellDef> Autores </th>
+          <td mat-cell *matCellDef="let book"> 
+            <span *ngFor="let autor of book.autores; let last = last">
+              {{autor.nomeAut}}{{last ? '' : ', '}}
+            </span>
+          </td>
         </ng-container>
 
         <ng-container matColumnDef="isbn">
           <th mat-header-cell *matHeaderCellDef> ISBN </th>
-          <td mat-cell *matCellDef="let book"> {{book.isbn}} </td>
+          <td mat-cell *matCellDef="let book"> {{book.isbnLiv}} </td>
         </ng-container>
 
         <ng-container matColumnDef="actions">
           <th mat-header-cell *matHeaderCellDef> Ações </th>
           <td mat-cell *matCellDef="let book">
-            <button mat-icon-button color="primary" [routerLink]="['edit', book.id]">
+            <button mat-icon-button color="primary" [routerLink]="['edit', book.idLiv]">
               <mat-icon>edit</mat-icon>
             </button>
             <button mat-icon-button color="warn" (click)="delete(book)">
@@ -66,22 +70,22 @@ import { Livro } from '../../../core/models/book.model';
   `
 })
 export class BookListComponent implements OnInit {
-    books: Livro[] = [];
-    displayedColumns: string[] = ['id', 'titulo', 'autor', 'isbn', 'actions'];
+  books: Livro[] = [];
+  displayedColumns: string[] = ['id', 'titulo', 'autor', 'isbn', 'actions'];
 
-    constructor(private bookService: BookService) { }
+  constructor(private bookService: BookService) { }
 
-    ngOnInit(): void {
-        this.loadBooks();
+  ngOnInit(): void {
+    this.loadBooks();
+  }
+
+  loadBooks() {
+    this.bookService.findAll().subscribe(data => this.books = data);
+  }
+
+  delete(book: Livro) {
+    if (confirm(`Deseja excluir o livro "${book.tituloLiv}"?`)) {
+      this.bookService.delete(book.idLiv!).subscribe(() => this.loadBooks());
     }
-
-    loadBooks() {
-        this.bookService.findAll().subscribe(data => this.books = data);
-    }
-
-    delete(book: Livro) {
-        if (confirm(`Deseja excluir o livro "${book.titulo}"?`)) {
-            this.bookService.delete(book.id!).subscribe(() => this.loadBooks());
-        }
-    }
+  }
 }

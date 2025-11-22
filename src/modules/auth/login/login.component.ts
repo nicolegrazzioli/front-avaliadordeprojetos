@@ -71,9 +71,17 @@ export class LoginComponent {
     });
   }
 
-  onSubmit() {
+  protected onSubmit() {
     if (this.loginForm.valid) {
-      this.authService.login(this.loginForm.value).subscribe({
+      const emailFormValue = this.loginForm.get('email')?.value;
+      const senhaFormValue = this.loginForm.get('senha')?.value;
+
+      const dadosLogin = {
+        login: emailFormValue,
+        senha: senhaFormValue
+      };
+
+      this.authService.login(dadosLogin).subscribe({
         next: () => {
           this.router.navigate(['/library/books']);
         },

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import {env} from '../../environment/environment';
+import { env } from '../../environment/environment';
 import { Usuario } from '../models/usuario';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 
@@ -15,7 +15,7 @@ export class AuthService {
   // url: http://localhost:8080/biblioteca3.0/login
   private readonly API_URL = `${env.apiUrl}/login`;
 
-  constructor(private httpClient: HttpClient, private router: Router) {}
+  constructor(private httpClient: HttpClient, private router: Router) { }
 
   //recebe email e senha do formulario
   login(email: string, senha: string): Observable<any> {
@@ -71,7 +71,7 @@ export class AuthService {
         nomeUs: decoded.sub //nao tem nome no token, entao usa email
       } as Usuario;
 
-    } catch (e){
+    } catch (e) {
       console.error('Erro ao decodificar o token JWT:', e);
       return null;
     }

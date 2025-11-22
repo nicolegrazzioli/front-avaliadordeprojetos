@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { env } from '../../environment/environment'; 
+import { env } from '../../environment/environment';
 import { Observable } from 'rxjs';
 import { Autor } from '../models/autor';
 
@@ -11,7 +11,7 @@ export class AutorService {
   // endpoint Java: @RequestMapping("/autores")
   private readonly API_URL = `${env.apiUrl}/autores`;
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient) { }
 
   listar(): Observable<Autor[]> {
     // Java: @GetMapping 

@@ -1,7 +1,5 @@
-import {Component, OnInit, signal} from '@angular/core';
-import {Router, RouterOutlet} from '@angular/router';
-import {RootComponent} from '../modules/root/root-component';
-import {AuthService} from '../core/services/auth-service';
+import { Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -10,9 +8,4 @@ import {AuthService} from '../core/services/auth-service';
   styleUrl: './app.css'
 })
 export class App {
-  constructor(private authService: AuthService) {
-    if (this.authService.isLogged()) {
-      this.authService.redirect();
-    }
-  }
 }
