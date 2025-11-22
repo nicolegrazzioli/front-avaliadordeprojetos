@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {MatButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
-import {Aluno} from '../../../core/models/aluno';
-import {AlunoService} from '../../../core/services/aluno-service';
+import {Aluno} from '../../../core/models/autor';
+import {AlunoService} from '../../../core/services/autor-service';
 import {MatError, MatFormField} from '@angular/material/form-field';
 import {MatInput, MatLabel} from '@angular/material/input';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';

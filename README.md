@@ -1,59 +1,101 @@
-# AvaliadorProjetosFront
+> preview README vs code: ctrl + k (solta) + v
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.9.
+# 📚 Sistema de Gestão de Biblioteca - Frontend
 
-## Development server
+Este projeto é o Frontend desenvolvido em **Angular**, consumindo uma API REST em **Java Spring Boot**. O sistema gerencia o empréstimo de livros, controle de autores e usuários com autenticação segura.
 
-To start a local development server, run:
+---
 
-```bash
-ng serve
-```
+## ⚠️ Configurações do Backend (API)
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+| Serviço | Porta | Configuração |
+| :--- | :--- | :--- |
+| **API Spring Boot** | `8081` | `server.port=8081` |
+| **Banco de Dados** | `5433` | PostgreSQL |
+| **Nome do Banco** | `POOW2` | Database Name |
+| **Flyway** | `Enabled` | Migrations automáticas ativas |
 
-## Code scaffolding
+---
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## 📦 Instruções de Entrega e Requisitos
 
-```bash
-ng generate component component-name
-```
+### 📋 Checklist de Entrega
+- [x] **Branch:** O código está na branch chamada `segunda_entrega`.
+- [ ] **Repositório:** A raiz do projeto Angular está na raiz do repositório (sem subpastas).
+- [x] **Arquivos Ignorados:** Pastas `node_modules` e `dist` **não** foram enviadas.
+- [ ] **Vídeo:** Link do vídeo (Max 5 min) demonstrando o código e a aplicação rodando.
+- [ ] **Arquivo Final:** Arquivo `.txt` com os links (Repos + Vídeo).
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+### 🎥 Requisitos do Vídeo
+O vídeo deve conter:
+1.  Descrição do trabalho.
+2.  Demonstração da aplicação rodando.
+3.  Destaque dos trechos de código mais importantes.
 
-```bash
-ng generate --help
-```
+---
 
-## Building
+## 🛠️ Tecnologias Utilizadas
 
-To build the project run:
+* **Framework:** [Angular](https://angular.io/) (v17+)
+* **Linguagem:** TypeScript
+* **UI Components:** Angular Material & Bootstrap 5
+* **Autenticação:** JWT (JSON Web Token)
+* **Roteamento:** Lazy Loading
 
-```bash
-ng build
-```
+---
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## 🚀 Como Rodar o Projeto
 
-## Running unit tests
+### Pré-requisitos
+Certifique-se de ter o **Node.js** e o **Angular CLI** instalados.
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+### Passos
+1. **Clone o repositório e acesse a branch correta:**
+   ```bash
+   git clone front-avaliadordeprojetos
+   git checkout segunda_entrega
+   ```
 
-```bash
-ng test
-```
+2. Instale as dependências:
+   ```bash
+   npm install
+   ```
 
-## Running end-to-end tests
+3. Execute o servidor de desenvolvimento:
+   ```bash
+   ng serve
+   ```
 
-For end-to-end (e2e) testing, run:
+4. Acesse a aplicação: Abra o navegador em `http://localhost:4200`
 
-```bash
-ng e2e
-```
+---
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+## 🏆 Critérios de Avaliação 
 
-## Additional Resources
+1. Estrutura e Configuração (1,0 pt)
+- [x] Organização em pastas (`core`, `modules`, `environment`).
+- [x] Bootstrap e Angular Material configurados no `angular.json`.
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+2. Roteamento e Navegação (1,5 pt)
+- [x] Implementação de Lazy Loading para módulos (Home, Login, etc).
+- [x] Uso correto de `<router-outlet>`.
+
+3. Integração com API (2,0 pts)
+- [x] Services isolados (`AutorService`, `LivroService`, `EmprestimoService`).
+- [x] Uso do `HttpClient` (GET, POST, PUT, DELETE).
+- [x] URL da API centralizada no `environment.ts`.
+
+4. Segurança e Autenticação (1,5 pt)
+- [x] Login funcional com JWT.
+- [x] HttpInterceptor implementado para anexar o Token automaticamente.
+- [x] Guards protegendo rotas privadas (redirecionamento se não logado).
+
+5. Formulários e Validação (2,0 pts)
+- [x] Uso de `ReactiveFormsModule` (FormGroup, FormBuilder).
+- [x] Validadores (`required`, `email`, etc).
+- [x] Feedback visual com `<mat-error>`.
+
+6. Interface de Usuário (2,0 pts)
+- [x] Componentes Angular Material (Toolbar, Card, Table, Icon).
+- [x] Layout responsivo com Grid System/Bootstrap.
+- [x] CRUD completo visível na interface.

@@ -8,7 +8,7 @@ import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
-import {env} from '../environment/enviorenment';
+import {env} from '../environment/environment';
 import { authInterceptor } from '../core/security/auth-interceptor';
 
 export const ENV: Provider = {
