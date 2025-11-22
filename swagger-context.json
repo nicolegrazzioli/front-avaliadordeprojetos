@@ -1,0 +1,1599 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+        "title": "OpenAPI definition",
+        "version": "v0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8080/biblioteca3.0",
+            "description": "Generated server url"
+        }
+    ],
+    "tags": [
+        {
+            "name": "Livros",
+            "description": "Operações de CRUD para Livros"
+        },
+        {
+            "name": "Usuários",
+            "description": "Operações de CRUD para Usuários"
+        },
+        {
+            "name": "Login",
+            "description": "Operações de login: autenticação de usuários e geração de token JWT"
+        },
+        {
+            "name": "Empréstimos",
+            "description": "Path relacionado aos empréstimos"
+        },
+        {
+            "name": "Autores",
+            "description": "Path relacionado aos Autores"
+        }
+    ],
+    "paths": {
+        "/usuarios/{id}": {
+            "get": {
+                "tags": [
+                    "Usuários"
+                ],
+                "summary": "Busca um usuário por ID",
+                "operationId": "buscarPorId",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "404": {
+                        "description": "Usuário não encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiErrorDTO"
+                                },
+                                "example": {
+                                    "mensagem": "Usuário não encontrado"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "Usuário encontrado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/DadosUsuario"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Usuários"
+                ],
+                "summary": "Atualiza um usuário existente por ID",
+                "operationId": "atualizar",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Usuario"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "400": {
+                        "description": "Dados inválidos",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/ApiErrorDTO"
+                                        },
+                                        {
+                                            "type": "string"
+                                        }
+                                    ]
+                                },
+                                "examples": {
+                                    "Erro de Validação": {
+                                        "description": "Erro de Validação",
+                                        "value": {
+                                            "emailUs": "E-mail inválido"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "Usuario atualizado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Usuario"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Usuario não encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiErrorDTO"
+                                },
+                                "example": {
+                                    "mensagem": "Usuario não encontrado"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Usuários"
+                ],
+                "summary": "Exclui um usuário por ID",
+                "operationId": "excluir",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Usuário excluído com sucesso"
+                    },
+                    "400": {
+                        "description": "Não é possível excluir usuário",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/ApiErrorDTO"
+                                        },
+                                        {
+                                            "type": "string"
+                                        }
+                                    ]
+                                },
+                                "examples": {
+                                    "Erro de Regra": {
+                                        "description": "Erro de Regra",
+                                        "value": {
+                                            "mensagem": "O usuário possui empréstimos ativos"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Usuario não encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiErrorDTO"
+                                },
+                                "example": {
+                                    "mensagem": "Usuario não encontrado"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/livros/{id}": {
+            "get": {
+                "tags": [
+                    "Livros"
+                ],
+                "summary": "Busca um livro por ID",
+                "operationId": "getLivroById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "404": {
+                        "description": "Livro não encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiErrorDTO"
+                                },
+                                "example": {
+                                    "mensagem": "Livro não encontrado"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "Livro encontrado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Livro"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Livros"
+                ],
+                "summary": "Atualiza um livro existente por ID",
+                "operationId": "atualizar_1",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LivroDTO"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "403": {
+                        "description": "Acesso negado (requer permissão de ADMIN)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiErrorDTO"
+                                },
+                                "example": {
+                                    "mensagem": "Acesso negado"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "Livro atualizado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Livro"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Livro não encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiErrorDTO"
+                                },
+                                "example": {
+                                    "mensagem": "Livro não encontrado"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Dados inválidos (erro de validação ou regra de negócio)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/ApiErrorDTO"
+                                        },
+                                        {
+                                            "type": "string"
+                                        }
+                                    ]
+                                },
+                                "example": {
+                                    "mensagem": "Dados inválidos"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Livros"
+                ],
+                "summary": "Exclui (soft delete) um livro por ID",
+                "operationId": "excluir_1",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "403": {
+                        "description": "Acesso negado (requer permissão de ADMIN)",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "mensagem": "Acesso negado"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Livro não encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiErrorDTO"
+                                },
+                                "example": {
+                                    "mensagem": "Livro não encontrado"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Erro de regra de negócio",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiErrorDTO"
+                                },
+                                "example": {
+                                    "mensagem": "O livro não pode ser excluído pois tem empréstimo ativo"
+                                }
+                            }
+                        }
+                    },
+                    "204": {
+                        "description": "Livro excluído (inativado) com sucesso"
+                    }
+                }
+            }
+        },
+        "/emprestimos/{id}/renovar": {
+            "put": {
+                "tags": [
+                    "Empréstimos"
+                ],
+                "summary": "Renovar um empréstimo por ID",
+                "operationId": "renovar",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "404": {
+                        "description": "Empréstimo não encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiErrorDTO"
+                                },
+                                "example": {
+                                    "mensagem": "Empréstimo não encontrado"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "Empréstimo renovado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Emprestimo"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Acesso negado (requer autenticação)"
+                    }
+                }
+            }
+        },
+        "/emprestimos/{id}/devolver": {
+            "put": {
+                "tags": [
+                    "Empréstimos"
+                ],
+                "summary": "Devolver um empréstimo por ID",
+                "operationId": "devolver",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "404": {
+                        "description": "Empréstimo não encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiErrorDTO"
+                                },
+                                "example": {
+                                    "mensagem": "Empréstimo não encontrado"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "O empréstimo não pode ser devolvido",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/ApiErrorDTO"
+                                        },
+                                        {
+                                            "type": "string"
+                                        }
+                                    ]
+                                },
+                                "examples": {
+                                    "Erro de Regra": {
+                                        "description": "Erro de Regra",
+                                        "value": {
+                                            "mensagem": "O empréstimo não pode ser devolvido pois não está ativo"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Acesso negado (requer autenticação)"
+                    },
+                    "200": {
+                        "description": "Empréstimo devolvido com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Emprestimo"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/autores/{id}": {
+            "get": {
+                "tags": [
+                    "Autores"
+                ],
+                "summary": "Busca um autor por ID",
+                "operationId": "buscarPorId_2",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Autor encontrado com sucesso",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Autor"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Autor não encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiErrorDTO"
+                                },
+                                "example": {
+                                    "mensagem": "Autor não encontrado"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Autores"
+                ],
+                "summary": "Atualizar um autor por ID",
+                "operationId": "atualizar_2",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Autor"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Autor atualizado com sucesso",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Autor"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Erro de validação nos dados do autor",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Autor"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Autor não encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiErrorDTO"
+                                },
+                                "example": {
+                                    "mensagem": "Autor não encontrado"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Autores"
+                ],
+                "summary": "Excluir um autor por ID",
+                "operationId": "excluir_2",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "400": {
+                        "description": "O autor não pode ser excluído"
+                    },
+                    "204": {
+                        "description": "Autor excluído com sucesso"
+                    }
+                }
+            }
+        },
+        "/usuarios/registrar": {
+            "post": {
+                "tags": [
+                    "Usuários"
+                ],
+                "summary": "Registra um novo usuário com permissão 'ROLE_USUARIO' (default)",
+                "operationId": "salvar",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Usuario"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "400": {
+                        "description": "Dados inválidos",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/ApiErrorDTO"
+                                        },
+                                        {
+                                            "type": "string"
+                                        }
+                                    ]
+                                },
+                                "examples": {
+                                    "Erro de Regra": {
+                                        "description": "Erro de Regra",
+                                        "value": {
+                                            "mensagem": "Email já cadastrado"
+                                        }
+                                    },
+                                    "Erro de Validação": {
+                                        "description": "Erro de Validação",
+                                        "value": {
+                                            "emailUs": "E-mail inválido",
+                                            "nomeUs": "O usuario deve ter nome"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "Usuário registrado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Usuario"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/login": {
+            "post": {
+                "tags": [
+                    "Login"
+                ],
+                "summary": "Autenticação de usuário",
+                "description": "Autentica um usuário com email e senha e retorna um token JWT",
+                "operationId": "login",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/DadosAutenticacao"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Login bem-sucedido - retorna o token JWT",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/DadosToken"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Credenciais inválidas: usuário ou senha incorretos",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiErrorDTO"
+                                },
+                                "example": {
+                                    "mensagem": "Usuário ou senha incorretos"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erro interno no servidor",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiErrorDTO"
+                                },
+                                "example": {
+                                    "mensagem": "Erro interno do servidor"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/livros/registrar": {
+            "post": {
+                "tags": [
+                    "Livros"
+                ],
+                "summary": "Registra um novo livro",
+                "operationId": "salvar_1",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LivroDTO"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "403": {
+                        "description": "Acesso negado (requer permissão de ADMIN)",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "mensagem": "Acesso negado"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Dados inválidos (erro de validação ou regra de negócio)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/ApiErrorDTO"
+                                        },
+                                        {
+                                            "type": "string"
+                                        }
+                                    ]
+                                },
+                                "examples": {
+                                    "Erro de Regra": {
+                                        "description": "Erro de Regra",
+                                        "value": {
+                                            "mensagem": "O livro deve ter pelo menos um autor"
+                                        }
+                                    },
+                                    "Erro de Validação": {
+                                        "description": "Erro de Validação",
+                                        "value": {
+                                            "tituloLiv": "O livro deve ter um nome"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "Livro registrado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Livro"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/emprestimos/registrar": {
+            "post": {
+                "tags": [
+                    "Empréstimos"
+                ],
+                "summary": "Registrar um empréstimo",
+                "operationId": "salvar_2",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/EmprestimoDTO"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "201": {
+                        "description": "Empréstimo registrado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Emprestimo"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Dados inválidos",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/ApiErrorDTO"
+                                        },
+                                        {
+                                            "type": "string"
+                                        }
+                                    ]
+                                },
+                                "examples": {
+                                    "Erro de Regra": {
+                                        "description": "Erro de Regra",
+                                        "value": {
+                                            "mensagem": "O livro não está disponível: está emprestado"
+                                        }
+                                    },
+                                    "Erro de Validação": {
+                                        "description": "Erro de Validação",
+                                        "value": {
+                                            "livroEmp": "não deve ser nulo",
+                                            "usuarioEmp": "não deve ser nulo"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/autores/registrar": {
+            "post": {
+                "tags": [
+                    "Autores"
+                ],
+                "summary": "Criar um autor",
+                "operationId": "salvar_3",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Autor"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "201": {
+                        "description": "Autor criado com sucesso",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Autor"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Erro de validação nos dados do autor",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Autor"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/usuarios": {
+            "get": {
+                "tags": [
+                    "Usuários"
+                ],
+                "summary": "Lista todos os usuários ativos",
+                "operationId": "listar",
+                "responses": {
+                    "200": {
+                        "description": "Lista de usuários ativos retornada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/DadosUsuario"
+                                    }
+                                },
+                                "examples": {
+                                    "Exemplo de Lista de Usuários": {
+                                        "description": "Exemplo de Lista de Usuários",
+                                        "value": [
+                                            {
+                                                "id": 2,
+                                                "email": "ana.silva@email.com",
+                                                "permissao": "ROLE_USUARIO"
+                                            },
+                                            {
+                                                "id": 3,
+                                                "email": "bruno.costa@email.com",
+                                                "permissao": "ROLE_USUARIO"
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/livros": {
+            "get": {
+                "tags": [
+                    "Livros"
+                ],
+                "summary": "Lista todos os livros ativos",
+                "operationId": "listarAtivos",
+                "responses": {
+                    "200": {
+                        "description": "Lista de livros ativos retornads com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Livro"
+                                    }
+                                },
+                                "examples": {
+                                    "Exemplo de Lista de Livros": {
+                                        "description": "Exemplo de Lista de Livros",
+                                        "value": [
+                                            {
+                                                "idLiv": 1,
+                                                "tituloLiv": "O Hobbit",
+                                                "isbnLiv": "978-8532511010",
+                                                "anoPublicacaoLiv": 1978,
+                                                "disponivelLiv": true,
+                                                "ativoLiv": true,
+                                                "autores": [
+                                                    {
+                                                        "idAut": 1,
+                                                        "nomeAut": "J.K. Rowling",
+                                                        "nacionalidadeAut": "Brasileira",
+                                                        "dataNascimentoAut": "2025-11-05"
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "idLiv": 2,
+                                                "tituloLiv": "1984",
+                                                "isbnLiv": "978-8535914849",
+                                                "anoPublicacaoLiv": 1949,
+                                                "disponivelLiv": true,
+                                                "ativoLiv": true,
+                                                "autores": [
+                                                    {
+                                                        "idAut": 2,
+                                                        "nomeAut": "George Orwell",
+                                                        "nacionalidadeAut": "Britânico",
+                                                        "dataNascimentoAut": "1903-06-25"
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/livros/all": {
+            "get": {
+                "tags": [
+                    "Livros"
+                ],
+                "summary": "Lista todos os livros (incluindo inativos)",
+                "operationId": "listarAll",
+                "responses": {
+                    "200": {
+                        "description": "Lista completa de livros retornada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Livro"
+                                    }
+                                },
+                                "examples": {
+                                    "Exemplo de Lista de Livros": {
+                                        "description": "Exemplo de Lista de Livros",
+                                        "value": [
+                                            {
+                                                "idLiv": 1,
+                                                "tituloLiv": "O Hobbit",
+                                                "isbnLiv": "978-8532511010",
+                                                "anoPublicacaoLiv": 1978,
+                                                "disponivelLiv": true,
+                                                "ativoLiv": false,
+                                                "autores": [
+                                                    {
+                                                        "idAut": 1,
+                                                        "nomeAut": "J.K. Rowling",
+                                                        "nacionalidadeAut": "Brasileira",
+                                                        "dataNascimentoAut": "2025-11-05"
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "idLiv": 2,
+                                                "tituloLiv": "1984",
+                                                "isbnLiv": "978-8535914849",
+                                                "anoPublicacaoLiv": 1949,
+                                                "disponivelLiv": true,
+                                                "ativoLiv": true,
+                                                "autores": [
+                                                    {
+                                                        "idAut": 2,
+                                                        "nomeAut": "George Orwell",
+                                                        "nacionalidadeAut": "Britânico",
+                                                        "dataNascimentoAut": "1903-06-25"
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/emprestimos": {
+            "get": {
+                "tags": [
+                    "Empréstimos"
+                ],
+                "summary": "Lista os empréstimos",
+                "description": "Se o usuário autenticado for ADMIN, lista todos os empréstimos; se for USUARIO, lista apenas os seus",
+                "operationId": "listar_1",
+                "responses": {
+                    "200": {
+                        "description": "Empréstimos encontrados com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Emprestimo"
+                                    }
+                                },
+                                "examples": {
+                                    "Exemplo de Lista de Empréstimos": {
+                                        "description": "Exemplo de Lista de Empréstimos",
+                                        "value": [
+                                            {
+                                                "idEmp": 1,
+                                                "livroEmp": {
+                                                    "idLiv": 1,
+                                                    "tituloLiv": "Harry Potter e a Pedra Filosofal"
+                                                },
+                                                "usuarioEmp": {
+                                                    "idUs": 2,
+                                                    "nomeUs": "Ana Silva"
+                                                },
+                                                "dataEmprestimoEmp": "2025-09-10",
+                                                "dataDevolucaoPrevistaEmp": "2025-09-24",
+                                                "dataDevolucaoEfetivaEmp": null,
+                                                "statusEmp": "ATIVO"
+                                            },
+                                            {
+                                                "idEmp": 2,
+                                                "livroEmp": {
+                                                    "idLiv": 2,
+                                                    "tituloLiv": "1984"
+                                                },
+                                                "usuarioEmp": {
+                                                    "idUs": 3,
+                                                    "nomeUs": "Bruno Costa"
+                                                },
+                                                "dataEmprestimoEmp": "2025-09-01",
+                                                "dataDevolucaoPrevistaEmp": "2025-09-15",
+                                                "dataDevolucaoEfetivaEmp": null,
+                                                "statusEmp": "ATRASADO"
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Acesso negado (requer autenticação)"
+                    }
+                }
+            }
+        },
+        "/emprestimos/{id}": {
+            "get": {
+                "tags": [
+                    "Empréstimos"
+                ],
+                "summary": "Busca um empréstimo por ID",
+                "operationId": "buscarPorId_1",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Empréstimo encontrado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Emprestimo"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Empréstimo não encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiErrorDTO"
+                                },
+                                "example": {
+                                    "mensagem": "Empréstimo não encontrado"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Acesso negado (requer autenticação)"
+                    }
+                }
+            }
+        },
+        "/autores": {
+            "get": {
+                "tags": [
+                    "Autores"
+                ],
+                "summary": "Lista os autores",
+                "operationId": "listar_2",
+                "responses": {
+                    "200": {
+                        "description": "Lista de autores retornada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Autor"
+                                    }
+                                },
+                                "examples": {
+                                    "Exemplo de Lista de Autores": {
+                                        "description": "Exemplo de Lista de Autores",
+                                        "value": [
+                                            {
+                                                "idAut": 1,
+                                                "nomeAut": "J.K. Rowling",
+                                                "nacionalidadeAut": "Britânica",
+                                                "dataNascimentoAut": "1965-07-31"
+                                            },
+                                            {
+                                                "idAut": 2,
+                                                "nomeAut": "George Orwell",
+                                                "nacionalidadeAut": "Britânico",
+                                                "dataNascimentoAut": "1903-06-25"
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "GrantedAuthority": {
+                "type": "object",
+                "properties": {
+                    "authority": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Usuario": {
+                "required": [
+                    "ativoUs",
+                    "nomeUs",
+                    "permissao",
+                    "senhaUs"
+                ],
+                "type": "object",
+                "properties": {
+                    "idUs": {
+                        "type": "integer",
+                        "description": "ID único do usuário",
+                        "format": "int32",
+                        "example": 1
+                    },
+                    "emailUs": {
+                        "type": "string",
+                        "description": "Email único do usuário",
+                        "example": "nome@email.com"
+                    },
+                    "senhaUs": {
+                        "type": "string",
+                        "description": "Senha do usuário",
+                        "example": "&$%gtS_&"
+                    },
+                    "nomeUs": {
+                        "type": "string",
+                        "description": "Nome do usuário",
+                        "example": "Ana Silva"
+                    },
+                    "ativoUs": {
+                        "type": "boolean",
+                        "description": "Identifica se o usuário está ativo",
+                        "example": true
+                    },
+                    "permissao": {
+                        "type": "string",
+                        "description": "Identifica o nível de permissão do usuário",
+                        "example": "USER"
+                    },
+                    "password": {
+                        "type": "string"
+                    },
+                    "enabled": {
+                        "type": "boolean"
+                    },
+                    "username": {
+                        "type": "string"
+                    },
+                    "authorities": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/GrantedAuthority"
+                        }
+                    },
+                    "accountNonLocked": {
+                        "type": "boolean"
+                    },
+                    "accountNonExpired": {
+                        "type": "boolean"
+                    },
+                    "credentialsNonExpired": {
+                        "type": "boolean"
+                    }
+                },
+                "description": "ID único do usuário do empréstimo",
+                "example": 3
+            },
+            "ApiErrorDTO": {
+                "type": "object",
+                "properties": {
+                    "mensagem": {
+                        "type": "string"
+                    }
+                }
+            },
+            "LivroDTO": {
+                "required": [
+                    "anoPublicacaoLiv",
+                    "autoresIds",
+                    "isbnLiv",
+                    "tituloLiv"
+                ],
+                "type": "object",
+                "properties": {
+                    "idLiv": {
+                        "type": "integer",
+                        "description": "ID único do livro",
+                        "format": "int32",
+                        "example": 1
+                    },
+                    "tituloLiv": {
+                        "type": "string",
+                        "description": "Título do livro",
+                        "example": "O Hobbit"
+                    },
+                    "isbnLiv": {
+                        "type": "string",
+                        "description": "Código ISBN do livro",
+                        "example": "978-8532511010"
+                    },
+                    "anoPublicacaoLiv": {
+                        "type": "integer",
+                        "description": "Ano de publicação do livro",
+                        "format": "int32",
+                        "example": 1978
+                    },
+                    "autoresIds": {
+                        "uniqueItems": true,
+                        "type": "array",
+                        "description": "ID(s) do(s) autor(es) do livro",
+                        "example": "1, 3",
+                        "items": {
+                            "type": "integer",
+                            "description": "ID(s) do(s) autor(es) do livro",
+                            "format": "int32"
+                        }
+                    }
+                }
+            },
+            "Autor": {
+                "required": [
+                    "nomeAut"
+                ],
+                "type": "object",
+                "properties": {
+                    "idAut": {
+                        "type": "integer",
+                        "description": "ID único do autor",
+                        "format": "int32",
+                        "example": 1
+                    },
+                    "nomeAut": {
+                        "type": "string",
+                        "description": "Nome do autor",
+                        "example": "J.K. Rowling"
+                    },
+                    "nacionalidadeAut": {
+                        "type": "string",
+                        "description": "Nacionalidade do autor",
+                        "example": "Brasileira"
+                    },
+                    "dataNascimentoAut": {
+                        "type": "string",
+                        "description": "Data de nascimento do autor",
+                        "format": "date"
+                    }
+                }
+            },
+            "Livro": {
+                "required": [
+                    "tituloLiv"
+                ],
+                "type": "object",
+                "properties": {
+                    "idLiv": {
+                        "type": "integer",
+                        "description": "ID único do livro",
+                        "format": "int32",
+                        "example": 1
+                    },
+                    "tituloLiv": {
+                        "type": "string",
+                        "description": "Título do livro",
+                        "example": "O Hobbit"
+                    },
+                    "isbnLiv": {
+                        "type": "string",
+                        "description": "Código ISBN do livro",
+                        "example": "978-8532511010"
+                    },
+                    "anoPublicacaoLiv": {
+                        "type": "integer",
+                        "description": "Ano de publicação do livro",
+                        "format": "int32",
+                        "example": 1978
+                    },
+                    "disponivelLiv": {
+                        "type": "boolean",
+                        "description": "Identifica se o livro está disponpivel para empréstimos",
+                        "example": true
+                    },
+                    "ativoLiv": {
+                        "type": "boolean",
+                        "description": "Identifica se o livro está ativo para empréstimos",
+                        "example": true
+                    },
+                    "autores": {
+                        "uniqueItems": true,
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Autor"
+                        }
+                    }
+                },
+                "description": "ID único do livro do empréstimo",
+                "example": 2
+            },
+            "Emprestimo": {
+                "required": [
+                    "dataDevolucaoPrevistaEmp",
+                    "dataEmprestimoEmp",
+                    "statusEmp"
+                ],
+                "type": "object",
+                "properties": {
+                    "idEmp": {
+                        "type": "integer",
+                        "description": "ID único do empréstimo",
+                        "format": "int32",
+                        "example": 1
+                    },
+                    "livroEmp": {
+                        "$ref": "#/components/schemas/Livro"
+                    },
+                    "usuarioEmp": {
+                        "$ref": "#/components/schemas/Usuario"
+                    },
+                    "dataEmprestimoEmp": {
+                        "type": "string",
+                        "description": "Data de início do empréstimo (data atual)",
+                        "format": "date"
+                    },
+                    "dataDevolucaoPrevistaEmp": {
+                        "type": "string",
+                        "description": "Data prevista para devolução do empréstimo (14 dias após a data de início)",
+                        "format": "date"
+                    },
+                    "dataDevolucaoEfetivaEmp": {
+                        "type": "string",
+                        "description": "Data de devolução efetiva do empréstimo",
+                        "format": "date"
+                    },
+                    "statusEmp": {
+                        "type": "string",
+                        "description": "Identifica o status do empréstimo: ativo, atrasado ou concluído",
+                        "example": "ativo"
+                    }
+                }
+            },
+            "DadosAutenticacao": {
+                "type": "object",
+                "properties": {
+                    "login": {
+                        "type": "string",
+                        "description": "Email do usuário",
+                        "example": "admin@email.com"
+                    },
+                    "senha": {
+                        "type": "string",
+                        "description": "Senha do usuário",
+                        "example": "admin123"
+                    }
+                }
+            },
+            "DadosToken": {
+                "type": "object",
+                "properties": {
+                    "token": {
+                        "type": "string",
+                        "description": "Token JWT de autenticação",
+                        "example": "eyJhbGciOiJIUzI1NiIsInR5cCI..."
+                    }
+                }
+            },
+            "EmprestimoDTO": {
+                "required": [
+                    "livroEmp",
+                    "usuarioEmp"
+                ],
+                "type": "object",
+                "properties": {
+                    "livroEmp": {
+                        "type": "integer",
+                        "description": "ID único do livro do empréstimo",
+                        "format": "int32",
+                        "example": 2
+                    },
+                    "usuarioEmp": {
+                        "type": "integer",
+                        "description": "ID único do usuário do empréstimo",
+                        "format": "int32",
+                        "example": 3
+                    }
+                }
+            },
+            "DadosUsuario": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "permissao": {
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    }
+}
