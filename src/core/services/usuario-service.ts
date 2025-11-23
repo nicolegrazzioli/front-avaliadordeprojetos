@@ -11,7 +11,9 @@ export class UsuarioService {
   // endpoint Java: @RequestMapping("/usuarios")
   private readonly API_URL = `${env.apiUrl}/usuarios`;
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient) {
+    console.log('- usuario-service.ts')
+  }
 
   listarAtivos(): Observable<Usuario[]> {
     // Java: @GetMapping 

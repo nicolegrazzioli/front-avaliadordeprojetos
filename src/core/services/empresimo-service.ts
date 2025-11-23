@@ -11,7 +11,9 @@ export class EmprestimoService {
   // endpoint Java: @RequestMapping("/emprestimos") -- url base
   private readonly API_URL = `${env.apiUrl}/emprestimos`;
 
-  constructor(private httpClient: HttpClient) { } //para requisições HTTP
+  constructor(private httpClient: HttpClient) {
+    console.log('- emprestimo-service.ts')
+  } //para requisições HTTP
 
   buscarPorId(id: number): Observable<Emprestimo> {
     // Java: @GetMapping("/{id}")

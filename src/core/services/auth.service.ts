@@ -13,7 +13,9 @@ export class AuthService {
     private tokenKey = 'auth_token';
     private apiUrl = `${env.apiUrl}/login`;
 
-    constructor(private http: HttpClient, private router: Router) { }
+    constructor(private http: HttpClient, private router: Router) {
+        console.log('- auth.service.ts')
+    }
 
     login(dados: DadosAutenticacao): Observable<DadosToken> {
         return this.http.post<DadosToken>(this.apiUrl, dados).pipe(

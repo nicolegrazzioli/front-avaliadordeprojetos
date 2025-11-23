@@ -11,6 +11,7 @@ export class BookService {
 
     constructor(private http: HttpClient, @Inject('ENV') private env: any) {
         this.apiUrl = `${this.env.apiUrl}/livros`;
+        console.log('- book.service.ts')
     }
 
     findAll(): Observable<Livro[]> {

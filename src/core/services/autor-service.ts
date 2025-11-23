@@ -11,7 +11,9 @@ export class AutorService {
   // endpoint Java: @RequestMapping("/autores")
   private readonly API_URL = `${env.apiUrl}/autores`;
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient) {
+    console.log('- autor-service.ts')
+  }
 
   listar(): Observable<Autor[]> {
     // Java: @GetMapping 

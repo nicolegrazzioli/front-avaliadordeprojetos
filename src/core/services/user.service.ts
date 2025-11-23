@@ -11,6 +11,7 @@ export class UserService {
 
     constructor(private http: HttpClient, @Inject('ENV') private env: any) {
         this.apiUrl = `${this.env.apiUrl}/usuarios`;
+        console.log('- user.service.ts')
     }
 
     findAll(): Observable<Usuario[]> {
