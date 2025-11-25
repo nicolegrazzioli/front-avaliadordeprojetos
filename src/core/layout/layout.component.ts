@@ -10,28 +10,29 @@ import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 
 @Component({
-    selector: 'app-layout',
-    standalone: true,
-    imports: [
-        CommonModule,
-        RouterModule,
-        MatToolbarModule,
-        MatButtonModule,
-        MatSidenavModule,
-        MatIconModule,
-        MatListModule
-    ],
-    template: `
+  selector: 'app-layout',
+  standalone: true,
+  imports: [
+    CommonModule,
+    RouterModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatSidenavModule,
+    MatIconModule,
+    MatListModule
+  ],
+  template: `
     <mat-sidenav-container class="sidenav-container">
       <mat-sidenav #drawer class="sidenav" fixedInViewport
           [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
           [mode]="(isHandset$ | async) ? 'over' : 'side'"
           [opened]="(isHandset$ | async) === false">
-        <mat-toolbar>Menu</mat-toolbar>
+        <mat-toolbar>Olá, {{ userName }}</mat-toolbar>
         <mat-nav-list>
           <a mat-list-item routerLink="/library/books">Livros</a>
           <a mat-list-item routerLink="/library/loans">Empréstimos</a>
           <a mat-list-item routerLink="/library/users">Usuários</a>
+          <a mat-list-item routerLink="/library/authors">Autores</a>
         </mat-nav-list>
       </mat-sidenav>
       <mat-sidenav-content>
@@ -49,7 +50,7 @@ import { Router } from '@angular/router';
       </mat-sidenav-content>
     </mat-sidenav-container>
   `,
-    styles: [`
+  styles: [`
     .sidenav-container {
       height: 100%;
     }
@@ -62,12 +63,16 @@ import { Router } from '@angular/router';
   `]
 })
 export class LayoutComponent {
-    isHandset$ = new Promise<boolean>(resolve => resolve(false)); // Simplified for now
+  isHandset$ = new Promise<boolean>(resolve => resolve(false));
+  userName: string = '';
 
-    constructor(private authService: AuthService, private router: Router) { }
+  constructor(private authService: AuthService, private router: Router) {
+    const user = this.authService.getUser();
+    this.userName = user ? user.nomeUs : 'Visitante';
+  }
 
-    logout() {
-        this.authService.logout();
-        this.router.navigate(['/login']);
-    }
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['/login']);
+  }
 }

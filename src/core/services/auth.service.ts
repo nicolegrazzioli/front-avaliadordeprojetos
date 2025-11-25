@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { Observable, tap } from 'rxjs';
 import { env } from '../../environment/environment';
 import { DadosAutenticacao, DadosToken } from '../models/auth.model';
-import { Usuario } from '../models/usuario';
+import { Usuario } from '../models/user.model';
 
 @Injectable({
     providedIn: 'root'
@@ -52,7 +52,8 @@ export class AuthService {
             return {
                 emailUs: decoded.sub,
                 permissao: decoded.ROLE?.[0] || decoded.ROLE,
-                nomeUs: decoded.sub // Using email as name since token might not have name
+                nomeUs: decoded.sub,
+                idUs: decoded.id
             } as Usuario;
 
         } catch (e) {

@@ -59,6 +59,7 @@ Certifique-se de ter o **Node.js** e o **Angular CLI** instalados.
 2. Instale as dependências:
    ```bash
    npm install
+   npm install -g @angular/cli
    ```
 
 3. Execute o servidor de desenvolvimento:

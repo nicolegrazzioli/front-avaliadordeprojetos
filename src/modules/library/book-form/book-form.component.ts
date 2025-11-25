@@ -5,8 +5,10 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { MatSelectModule } from '@angular/material/select';
 import { BookService } from '../../../core/services/book.service';
-import { Livro } from '../../../core/models/livro';
+import { AutorService } from '../../../core/services/autor-service';
+import { Autor } from '../../../core/models/author.model';
 
 @Component({
   selector: 'app-book-form',
@@ -17,7 +19,8 @@ import { Livro } from '../../../core/models/livro';
     RouterModule,
     MatCardModule,
     MatInputModule,
-    MatButtonModule
+    MatButtonModule,
+    MatSelectModule
   ],
   template: `
     <div class="container mt-4">
@@ -54,8 +57,13 @@ import { Livro } from '../../../core/models/livro';
               </div>
               <div class="col-md-6">
                 <mat-form-field class="w-100">
-                  <mat-label>IDs dos Autores (separados por vírgula)</mat-label>
-                  <input matInput formControlName="autoresIds">
+                  <mat-label>Autores</mat-label>
+                  <mat-select formControlName="autoresIds" multiple>
+                    <mat-option *ngFor="let autor of autores" [value]="autor.idAut">
+                      {{ autor.nomeAut }}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="form.get('autoresIds')?.hasError('required')">Obrigatório</mat-error>
                 </mat-form-field>
               </div>
             </div>
@@ -74,10 +82,12 @@ export class BookFormComponent implements OnInit {
   form: FormGroup;
   isEdit = false;
   id: number | null = null;
+  autores: Autor[] = [];
 
   constructor(
     private fb: FormBuilder,
     private bookService: BookService,
+    private autorService: AutorService,
     private router: Router,
     private route: ActivatedRoute
   ) {
@@ -85,36 +95,36 @@ export class BookFormComponent implements OnInit {
       tituloLiv: ['', Validators.required],
       isbnLiv: ['', Validators.required],
       anoPublicacaoLiv: ['', Validators.required],
-      autoresIds: [''] // Simple text input for now, to be parsed
+      autoresIds: [[], Validators.required]
     });
   }
 
   ngOnInit(): void {
+    this.carregarAutores();
     this.id = Number(this.route.snapshot.paramMap.get('id'));
     if (this.id) {
       this.isEdit = true;
       this.bookService.findById(this.id).subscribe(book => {
         this.form.patchValue(book);
-        // Handle autoresIds mapping if needed for edit
         if (book.autores) {
           this.form.patchValue({
-            autoresIds: book.autores.map(a => a.idAut).join(', ')
+            autoresIds: book.autores.map(a => a.idAut)
           });
         }
       });
     }
   }
 
+  carregarAutores() {
+    this.autorService.listar().subscribe({
+      next: (res) => this.autores = res,
+      error: (err) => console.error('Erro ao carregar autores', err)
+    });
+  }
+
   onSubmit() {
     if (this.form.valid) {
       const formValue = this.form.value;
-
-      // Parse autoresIds string to array of numbers
-      if (typeof formValue.autoresIds === 'string') {
-        formValue.autoresIds = formValue.autoresIds.split(',')
-          .map((id: string) => Number(id.trim()))
-          .filter((id: number) => !isNaN(id));
-      }
 
       const operation = this.isEdit
         ? this.bookService.update(this.id!, formValue)

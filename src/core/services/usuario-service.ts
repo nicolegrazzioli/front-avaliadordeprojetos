@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { env } from '../../environment/environment';
-import { Observable } from 'rxjs';
-import { Usuario } from '../models/usuario';
+import { Observable, map } from 'rxjs';
+import { Usuario } from '../models/user.model';
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +17,15 @@ export class UsuarioService {
 
   listarAtivos(): Observable<Usuario[]> {
     // Java: @GetMapping 
-    return this.httpClient.get<Usuario[]>(this.API_URL);
+    return this.httpClient.get<any[]>(this.API_URL).pipe(
+      map(users => users.map(u => ({
+        idUs: u.id,
+        nomeUs: u.nome || u.email, // Fallback to email if name is missing
+        emailUs: u.email,
+        permissao: u.permissao,
+        ativoUs: true
+      })))
+    );
   }
 
   getUsuarioById(id: number): Observable<Usuario[]> {

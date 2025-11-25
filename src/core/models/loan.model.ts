@@ -1,5 +1,5 @@
-import { Livro } from './livro';
-import { Usuario } from './usuario';
+import { Livro } from './book.model';
+import { Usuario } from './user.model';
 
 export interface Emprestimo {
   idEmp?: number; // ? (opcional) pq no front o user nao coloca id
@@ -9,8 +9,8 @@ export interface Emprestimo {
   dataDevolucaoPrevistaEmp?: string;
   dataDevolucaoEfetivaEmp?: string;
   statusEmp?: 'ATIVO' | 'CONCLUIDO' | 'ATRASADO';
-  
+
   // aux (cadastros -- POST)
-  livroId?: number;   
-  usuarioId?: number; 
+  livroId?: number;
+  usuarioId?: number;
 }

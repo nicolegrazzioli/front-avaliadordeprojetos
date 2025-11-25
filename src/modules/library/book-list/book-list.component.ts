@@ -5,7 +5,8 @@ import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { BookService } from '../../../core/services/book.service';
-import { Livro } from '../../../core/models/livro';
+import { AuthService } from '../../../core/services/auth.service';
+import { Livro } from '../../../core/models/book.model';
 
 @Component({
   selector: 'app-book-list',
@@ -21,7 +22,7 @@ import { Livro } from '../../../core/models/livro';
     <div class="container-fluid">
       <div class="d-flex justify-content-between align-items-center mb-4">
         <h2>Livros</h2>
-        <button mat-raised-button color="primary" routerLink="new">
+        <button mat-raised-button color="primary" routerLink="new" *ngIf="isAdmin">
           <mat-icon>add</mat-icon> Novo Livro
         </button>
       </div>
@@ -54,12 +55,14 @@ import { Livro } from '../../../core/models/livro';
         <ng-container matColumnDef="actions">
           <th mat-header-cell *matHeaderCellDef> Ações </th>
           <td mat-cell *matCellDef="let book">
-            <button mat-icon-button color="primary" [routerLink]="['edit', book.idLiv]">
-              <mat-icon>edit</mat-icon>
-            </button>
-            <button mat-icon-button color="warn" (click)="delete(book)">
-              <mat-icon>delete</mat-icon>
-            </button>
+            <ng-container *ngIf="isAdmin">
+              <button mat-icon-button color="primary" [routerLink]="['edit', book.idLiv]">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button color="warn" (click)="delete(book)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </ng-container>
           </td>
         </ng-container>
 
@@ -73,9 +76,13 @@ export class BookListComponent implements OnInit {
   books: Livro[] = [];
   displayedColumns: string[] = ['id', 'titulo', 'autor', 'isbn', 'actions'];
 
-  constructor(private bookService: BookService) { }
+  isAdmin = false;
+
+  constructor(private bookService: BookService, private authService: AuthService) { }
 
   ngOnInit(): void {
+    const user = this.authService.getUser();
+    this.isAdmin = user?.permissao === 'ROLE_ADMIN';
     this.loadBooks();
   }
 
