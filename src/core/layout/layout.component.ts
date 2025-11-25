@@ -29,10 +29,10 @@ import { Router } from '@angular/router';
           [opened]="(isHandset$ | async) === false">
         <mat-toolbar>Olá, {{ userName }}</mat-toolbar>
         <mat-nav-list>
+          <a mat-list-item routerLink="/library/authors">Autores</a>
           <a mat-list-item routerLink="/library/books">Livros</a>
           <a mat-list-item routerLink="/library/loans">Empréstimos</a>
           <a mat-list-item routerLink="/library/users">Usuários</a>
-          <a mat-list-item routerLink="/library/authors">Autores</a>
         </mat-nav-list>
       </mat-sidenav>
       <mat-sidenav-content>
