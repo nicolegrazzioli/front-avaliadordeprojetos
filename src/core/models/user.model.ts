@@ -41,4 +41,6 @@ export interface RegisterDTO {
   nomeUs: string;
   emailUs: string;
   senhaUs: string;
+  ativoUs?: boolean;
+  permissao?: string;
 }

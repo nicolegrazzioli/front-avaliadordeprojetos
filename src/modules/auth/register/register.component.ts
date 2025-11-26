@@ -112,7 +112,9 @@ export class RegisterComponent {
             const dto: RegisterDTO = {
                 nomeUs: formValue.nomeUs,
                 emailUs: formValue.emailUs,
-                senhaUs: formValue.senhaUs
+                senhaUs: formValue.senhaUs,
+                ativoUs: true,
+                permissao: 'ROLE_USUARIO'
             };
 
             this.userService.registerPublic(dto).subscribe({
