@@ -22,7 +22,7 @@ import { Router } from '@angular/router';
     MatListModule
   ],
   template: `
-    <mat-sidenav-container class="sidenav-container">
+    <mat-sidenav-container class="sidenav-container"> 
       <mat-sidenav #drawer class="sidenav" fixedInViewport
           [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
           [mode]="(isHandset$ | async) ? 'over' : 'side'"
@@ -40,7 +40,7 @@ import { Router } from '@angular/router';
           <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()" *ngIf="isHandset$ | async">
             <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
           </button>
-          <span>Biblioteca</span>
+          <span>Biblioteca 4.0</span>
           <span class="spacer"></span>
           <button mat-button (click)="logout()">Sair</button>
         </mat-toolbar>
@@ -55,7 +55,7 @@ import { Router } from '@angular/router';
       height: 100%;
     }
     .sidenav {
-      width: 200px;
+      width: 280px;
     }
     .spacer {
       flex: 1 1 auto;

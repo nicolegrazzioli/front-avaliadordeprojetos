@@ -24,8 +24,8 @@ export class EmprestimoService {
 
   registrar(idLivro: number, idUsuario: number): Observable<Emprestimo> {
     const dto = {
-      livroId: idLivro,
-      usuarioId: idUsuario
+      livroEmp: idLivro,
+      usuarioEmp: idUsuario
     };
     return this.httpClient.post<Emprestimo>(`${this.API_URL}/registrar`, dto);
   }

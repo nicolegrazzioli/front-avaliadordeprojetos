@@ -21,7 +21,7 @@ import { Router } from '@angular/router';
     <div class="d-flex justify-content-center align-items-center vh-100 bg-light">
       <mat-card class="p-4" style="width: 400px;">
         <mat-card-header class="mb-3">
-          <mat-card-title>Login Biblioteca</mat-card-title>
+          <mat-card-title>Login Biblioteca 4.0</mat-card-title>
         </mat-card-header>
         <mat-card-content>
           <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
@@ -38,7 +38,7 @@ import { Router } from '@angular/router';
 
             <mat-form-field class="w-100 mb-3">
               <mat-label>Senha</mat-label>
-              <input matInput type="password" formControlName="senha">
+              <input matInput type="password" formControlName="senha" placeholder="Ex: admin123">
               <mat-error *ngIf="loginForm.get('senha')?.hasError('required')">
                 Senha é obrigatória
               </mat-error>

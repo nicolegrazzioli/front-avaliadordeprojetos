@@ -52,7 +52,7 @@ export class AuthService {
             return {
                 emailUs: decoded.sub,
                 permissao: decoded.ROLE?.[0] || decoded.ROLE,
-                nomeUs: decoded.sub,
+                nomeUs: decoded.nome || decoded.sub,
                 idUs: decoded.id
             } as Usuario;
 

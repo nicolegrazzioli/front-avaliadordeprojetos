@@ -1,7 +1,7 @@
 import { Injectable, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Usuario, DadosUsuario } from '../models/user.model';
+import { Usuario, DadosUsuario, DadosUsuarioCompleto, UpdatePermissionDTO, UpdateProfileDTO, RegisterDTO } from '../models/user.model';
 
 @Injectable({
     providedIn: 'root'
@@ -14,12 +14,16 @@ export class UserService {
         console.log('- user.service.ts')
     }
 
-    findAll(): Observable<Usuario[]> {
-        return this.http.get<Usuario[]>(this.apiUrl);
+    findAll(): Observable<DadosUsuario[]> {
+        return this.http.get<DadosUsuario[]>(this.apiUrl);
     }
 
-    findById(id: number): Observable<DadosUsuario> {
-        return this.http.get<DadosUsuario>(`${this.apiUrl}/${id}`);
+    findAllComplete(): Observable<DadosUsuarioCompleto[]> {
+        return this.http.get<DadosUsuarioCompleto[]>(`${this.apiUrl}/complete`);
+    }
+
+    findById(id: number): Observable<DadosUsuarioCompleto> {
+        return this.http.get<DadosUsuarioCompleto>(`${this.apiUrl}/${id}`);
     }
 
     create(usuario: Usuario): Observable<Usuario> {
@@ -28,6 +32,18 @@ export class UserService {
 
     update(id: number, usuario: Usuario): Observable<Usuario> {
         return this.http.put<Usuario>(`${this.apiUrl}/${id}`, usuario);
+    }
+
+    updatePermission(id: number, dto: UpdatePermissionDTO): Observable<DadosUsuarioCompleto> {
+        return this.http.put<DadosUsuarioCompleto>(`${this.apiUrl}/${id}/permission`, dto);
+    }
+
+    updateProfile(id: number, dto: UpdateProfileDTO): Observable<DadosUsuarioCompleto> {
+        return this.http.put<DadosUsuarioCompleto>(`${this.apiUrl}/${id}/profile`, dto);
+    }
+
+    registerPublic(dto: RegisterDTO): Observable<DadosUsuario> {
+        return this.http.post<DadosUsuario>(`${this.apiUrl}/registrar`, dto);
     }
 
     delete(id: number): Observable<void> {
