@@ -1,10 +1,12 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from '../modules/auth/login/login.component';
+import { RegisterComponent } from '../modules/auth/register/register.component';
 import { LayoutComponent } from '../core/layout/layout.component';
 import { authGuard } from '../core/security/auth.guard';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent }, // Rota pública
   {
     path: 'library',
     component: LayoutComponent,

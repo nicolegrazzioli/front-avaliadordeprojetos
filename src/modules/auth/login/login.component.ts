@@ -5,7 +5,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { AuthService } from '../../../core/services/auth.service';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -15,7 +15,8 @@ import { Router } from '@angular/router';
     ReactiveFormsModule,
     MatCardModule,
     MatInputModule,
-    MatButtonModule
+    MatButtonModule,
+    RouterModule
   ],
   template: `
     <div class="d-flex justify-content-center align-items-center vh-100 bg-light">
@@ -47,6 +48,13 @@ import { Router } from '@angular/router';
             <button mat-raised-button color="primary" class="w-100" type="submit" [disabled]="loginForm.invalid">
               Entrar
             </button>
+            
+            <div class="mt-3 text-center">
+              <button mat-button color="accent" type="button" routerLink="/register">
+                Criar Conta
+              </button>
+            </div>
+
             <div *ngIf="error" class="text-danger mt-2 text-center">
               {{ error }}
             </div>

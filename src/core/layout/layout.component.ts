@@ -28,11 +28,12 @@ import { Router } from '@angular/router';
           [mode]="(isHandset$ | async) ? 'over' : 'side'"
           [opened]="(isHandset$ | async) === false">
         <mat-toolbar>Olá, {{ userName }}</mat-toolbar>
-        <mat-nav-list>
+          <mat-nav-list>
           <a mat-list-item routerLink="/library/authors">Autores</a>
           <a mat-list-item routerLink="/library/books">Livros</a>
           <a mat-list-item routerLink="/library/loans">Empréstimos</a>
-          <a mat-list-item routerLink="/library/users">Usuários</a>
+          <a mat-list-item routerLink="/library/users" *ngIf="isAdmin">Usuários</a>
+          <a mat-list-item routerLink="/library/users/profile">Meu Perfil</a>
         </mat-nav-list>
       </mat-sidenav>
       <mat-sidenav-content>
@@ -65,10 +66,13 @@ import { Router } from '@angular/router';
 export class LayoutComponent {
   isHandset$ = new Promise<boolean>(resolve => resolve(false));
   userName: string = '';
+  isAdmin: boolean = false;
 
   constructor(private authService: AuthService, private router: Router) {
     const user = this.authService.getUser();
     this.userName = user ? user.nomeUs : 'Visitante';
+    this.isAdmin = user ? user.permissao === 'ROLE_ADMIN' : false;
+    // this.isAdmin = user?.permissao === 'ROLE_ADMIN';
   }
 
   logout() {
