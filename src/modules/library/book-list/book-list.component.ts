@@ -92,7 +92,17 @@ export class BookListComponent implements OnInit {
 
   delete(book: Livro) {
     if (confirm(`Deseja excluir o livro "${book.tituloLiv}"?`)) {
-      this.bookService.delete(book.idLiv!).subscribe(() => this.loadBooks());
+      this.bookService.delete(book.idLiv!).subscribe({
+        next: () => {
+          // Sucesso: recarrega a lista
+          this.loadBooks();
+        },
+        error: (err) => {
+          // Erro: pega a mensagem que o Java mandou ou usa uma genérica
+          const mensagemErro = err.error?.mensagem || 'Não foi possível excluir o livro.';
+          alert(mensagemErro);
+        }
+      });
     }
   }
 }
