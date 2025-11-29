@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { Usuario, DadosUsuario, DadosUsuarioCompleto, UpdatePermissionDTO, UpdateProfileDTO, RegisterDTO } from '../models/user.model';
 
 @Injectable({
@@ -20,6 +20,18 @@ export class UserService {
 
     findAllComplete(): Observable<DadosUsuarioCompleto[]> {
         return this.http.get<DadosUsuarioCompleto[]>(`${this.apiUrl}/complete`);
+    }
+
+    findAllActive(): Observable<Usuario[]> {
+        return this.http.get<any[]>(this.apiUrl).pipe(
+            map(users => users.map(u => ({
+                idUs: u.id,
+                nomeUs: u.nome || u.email, // Garante que tenha algo para exibir no dropdown
+                emailUs: u.email,
+                permissao: u.permissao,
+                ativoUs: true
+            })))
+        );
     }
 
     findById(id: number): Observable<DadosUsuarioCompleto> {

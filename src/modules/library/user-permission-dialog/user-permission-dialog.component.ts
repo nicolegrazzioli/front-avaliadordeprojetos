@@ -10,18 +10,18 @@ import { UserService } from '../../../core/services/user.service';
 import { DadosUsuarioCompleto, UpdatePermissionDTO } from '../../../core/models/user.model';
 
 @Component({
-    selector: 'app-user-permission-dialog',
-    standalone: true,
-    imports: [
-        CommonModule,
-        ReactiveFormsModule,
-        MatDialogModule,
-        MatButtonModule,
-        MatFormFieldModule,
-        MatSelectModule,
-        MatCheckboxModule
-    ],
-    template: `
+  selector: 'app-user-permission-dialog',
+  standalone: true,
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    MatDialogModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatCheckboxModule
+  ],
+  template: `
     <h2 mat-dialog-title>Editar Permissões - {{data.nomeUs}}</h2>
     <mat-dialog-content>
       <form [formGroup]="form">
@@ -49,30 +49,30 @@ import { DadosUsuarioCompleto, UpdatePermissionDTO } from '../../../core/models/
   `
 })
 export class UserPermissionDialogComponent {
-    form: FormGroup;
+  form: FormGroup;
 
-    constructor(
-        private fb: FormBuilder,
-        private userService: UserService,
-        public dialogRef: MatDialogRef<UserPermissionDialogComponent>,
-        @Inject(MAT_DIALOG_DATA) public data: DadosUsuarioCompleto
-    ) {
-        this.form = this.fb.group({
-            ativoUs: [data.ativoUs, Validators.required],
-            permissao: [data.permissao, Validators.required]
-        });
-    }
+  constructor(
+    private fb: FormBuilder,
+    private userService: UserService,
+    public dialogRef: MatDialogRef<UserPermissionDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: DadosUsuarioCompleto
+  ) {
+    this.form = this.fb.group({
+      ativoUs: [data.ativoUs, Validators.required],
+      permissao: [data.permissao, Validators.required]
+    });
+  }
 
-    onCancel(): void {
-        this.dialogRef.close(false);
-    }
+  onCancel(): void {
+    this.dialogRef.close(false);
+  }
 
-    onSave(): void {
-        if (this.form.valid) {
-            const dto: UpdatePermissionDTO = this.form.value;
-            this.userService.updatePermission(this.data.idUs, dto).subscribe(() => {
-                this.dialogRef.close(true);
-            });
-        }
+  onSave(): void {
+    if (this.form.valid) {
+      const dto: UpdatePermissionDTO = this.form.value;
+      this.userService.updatePermission(this.data.idUs, dto).subscribe(() => {
+        this.dialogRef.close(true);
+      });
     }
+  }
 }
