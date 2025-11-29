@@ -91,11 +91,18 @@ export class LoginComponent {
 
       this.authService.login(dadosLogin).subscribe({
         next: () => {
-          this.router.navigate(['/library/books']);
+          this.router.navigate(['/library/authors']);
         },
         error: (err) => {
-          this.error = 'Usuário ou senha incorretos';
           console.error(err);
+
+          if (err.status === 401) {
+            this.error = 'Acesso negado: usuário ou senha incorretos';
+          } else if (err.status === 403) {
+            this.error = 'Acesso negado: usuário inativo';
+          } else {
+            this.error = 'Erro ao conectar ao servidor';
+          }
         }
       });
     }
