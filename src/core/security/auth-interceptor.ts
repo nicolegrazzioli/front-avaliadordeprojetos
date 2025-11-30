@@ -6,6 +6,11 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
   const token = authService.getToken();
 
+  // Não anexar token para login e registro
+  if (req.url.includes('/login') || req.url.includes('/register')) {
+    return next(req);
+  }
+
   if (token) {
     const cloned = req.clone({
       setHeaders: {
