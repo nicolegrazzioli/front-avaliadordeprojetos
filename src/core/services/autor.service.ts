@@ -12,7 +12,7 @@ export class AutorService {
   private readonly API_URL = `${env.apiUrl}/autores`;
 
   constructor(private httpClient: HttpClient) {
-    console.log('- autor-service.ts')
+    console.log('- autor.service.ts')
   }
 
   listar(): Observable<Autor[]> {

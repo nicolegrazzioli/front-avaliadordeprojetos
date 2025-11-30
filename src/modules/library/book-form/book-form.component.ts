@@ -7,7 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { BookService } from '../../../core/services/book.service';
-import { AutorService } from '../../../core/services/autor-service';
+import { AutorService } from '../../../core/services/autor.service';
 import { Autor } from '../../../core/models/author.model';
 
 @Component({

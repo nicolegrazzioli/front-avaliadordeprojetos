@@ -4,21 +4,21 @@ import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterModule } from '@angular/router';
-import { AutorService } from '../../../core/services/autor-service';
+import { AutorService } from '../../../core/services/autor.service';
 import { AuthService } from '../../../core/services/auth.service';
 import { Autor } from '../../../core/models/author.model';
 
 @Component({
-    selector: 'app-author-list',
-    standalone: true,
-    imports: [
-        CommonModule,
-        MatTableModule,
-        MatButtonModule,
-        MatIconModule,
-        RouterModule
-    ],
-    template: `
+  selector: 'app-author-list',
+  standalone: true,
+  imports: [
+    CommonModule,
+    MatTableModule,
+    MatButtonModule,
+    MatIconModule,
+    RouterModule
+  ],
+  template: `
     <div class="container mt-4">
       <div class="d-flex justify-content-between align-items-center mb-3">
         <h2>Autores</h2>
@@ -64,34 +64,34 @@ import { Autor } from '../../../core/models/author.model';
   `
 })
 export class AuthorListComponent implements OnInit {
-    autores: Autor[] = [];
-    displayedColumns: string[] = ['nome', 'nacionalidade', 'dataNascimento', 'actions'];
-    isAdmin = false;
+  autores: Autor[] = [];
+  displayedColumns: string[] = ['nome', 'nacionalidade', 'dataNascimento', 'actions'];
+  isAdmin = false;
 
-    constructor(
-        private autorService: AutorService,
-        private authService: AuthService
-    ) { }
+  constructor(
+    private autorService: AutorService,
+    private authService: AuthService
+  ) { }
 
-    ngOnInit(): void {
-        const user = this.authService.getUser();
-        this.isAdmin = user?.permissao === 'ROLE_ADMIN';
-        this.loadAutores();
+  ngOnInit(): void {
+    const user = this.authService.getUser();
+    this.isAdmin = user?.permissao === 'ROLE_ADMIN';
+    this.loadAutores();
+  }
+
+  loadAutores() {
+    this.autorService.listar().subscribe({
+      next: (data) => this.autores = data,
+      error: (err) => console.error('Erro ao listar autores', err)
+    });
+  }
+
+  delete(autor: Autor) {
+    if (confirm(`Deseja excluir o autor ${autor.nomeAut}?`)) {
+      this.autorService.excluir(autor.idAut!).subscribe({
+        next: () => this.loadAutores(),
+        error: (err) => alert('Erro ao excluir autor. Verifique se existem livros associados.')
+      });
     }
-
-    loadAutores() {
-        this.autorService.listar().subscribe({
-            next: (data) => this.autores = data,
-            error: (err) => console.error('Erro ao listar autores', err)
-        });
-    }
-
-    delete(autor: Autor) {
-        if (confirm(`Deseja excluir o autor ${autor.nomeAut}?`)) {
-            this.autorService.excluir(autor.idAut!).subscribe({
-                next: () => this.loadAutores(),
-                error: (err) => alert('Erro ao excluir autor. Verifique se existem livros associados.')
-            });
-        }
-    }
+  }
 }

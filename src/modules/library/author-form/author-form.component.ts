@@ -5,20 +5,20 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { AutorService } from '../../../core/services/autor-service';
+import { AutorService } from '../../../core/services/autor.service';
 
 @Component({
-    selector: 'app-author-form',
-    standalone: true,
-    imports: [
-        CommonModule,
-        ReactiveFormsModule,
-        RouterModule,
-        MatCardModule,
-        MatInputModule,
-        MatButtonModule
-    ],
-    template: `
+  selector: 'app-author-form',
+  standalone: true,
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    RouterModule,
+    MatCardModule,
+    MatInputModule,
+    MatButtonModule
+  ],
+  template: `
     <div class="container mt-4">
       <mat-card>
         <mat-card-header>
@@ -64,46 +64,46 @@ import { AutorService } from '../../../core/services/autor-service';
   `
 })
 export class AuthorFormComponent implements OnInit {
-    form: FormGroup;
-    isEdit = false;
-    id: number | null = null;
+  form: FormGroup;
+  isEdit = false;
+  id: number | null = null;
 
-    constructor(
-        private fb: FormBuilder,
-        private autorService: AutorService,
-        private router: Router,
-        private route: ActivatedRoute
-    ) {
-        this.form = this.fb.group({
-            nomeAut: ['', Validators.required],
-            nacionalidadeAut: ['', Validators.required],
-            dataNascimentoAut: ['', Validators.required]
-        });
-    }
+  constructor(
+    private fb: FormBuilder,
+    private autorService: AutorService,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {
+    this.form = this.fb.group({
+      nomeAut: ['', Validators.required],
+      nacionalidadeAut: ['', Validators.required],
+      dataNascimentoAut: ['', Validators.required]
+    });
+  }
 
-    ngOnInit(): void {
-        this.id = Number(this.route.snapshot.paramMap.get('id'));
-        if (this.id) {
-            this.isEdit = true;
-            this.autorService.listar().subscribe(autores => {
-                const autor = autores.find(a => a.idAut === this.id);
-                if (autor) {
-                    this.form.patchValue(autor);
-                }
-            });
+  ngOnInit(): void {
+    this.id = Number(this.route.snapshot.paramMap.get('id'));
+    if (this.id) {
+      this.isEdit = true;
+      this.autorService.listar().subscribe(autores => {
+        const autor = autores.find(a => a.idAut === this.id);
+        if (autor) {
+          this.form.patchValue(autor);
         }
+      });
     }
+  }
 
-    onSubmit() {
-        if (this.form.valid) {
-            const formValue = this.form.value;
-            const operation = this.isEdit
-                ? this.autorService.atualizar({ ...formValue, idAut: this.id })
-                : this.autorService.salvar(formValue);
+  onSubmit() {
+    if (this.form.valid) {
+      const formValue = this.form.value;
+      const operation = this.isEdit
+        ? this.autorService.atualizar({ ...formValue, idAut: this.id })
+        : this.autorService.salvar(formValue);
 
-            operation.subscribe(() => {
-                this.router.navigate(['/library/authors']);
-            });
-        }
+      operation.subscribe(() => {
+        this.router.navigate(['/library/authors']);
+      });
     }
+  }
 }
