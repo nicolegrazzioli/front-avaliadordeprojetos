@@ -1,4 +1,4 @@
-> preview README vs code: ctrl + k (solta) + v
+Backend: https://github.com/nicolegrazzioli/biblioteca3.0/tree/main
 
 # 📚 Sistema de Gestão de Biblioteca - Frontend
 
@@ -12,19 +12,19 @@ Este projeto é o Frontend desenvolvido em **Angular**, consumindo uma API REST 
 | :--- | :--- | :--- |
 | **API Spring Boot** | `8081` | `server.port=8081` |
 | **Banco de Dados** | `5433` | PostgreSQL |
-| **Nome do Banco** | `POOW2` | Database Name |
+| **Nome do Banco** | `POOW2` | Nome da Database |
 | **Flyway** | `Enabled` | Migrations automáticas ativas |
 
 ---
 
-## 📦 Instruções de Entrega e Requisitos
+## 📦 Entrega e Requisitos
 
-### 📋 Checklist de Entrega
+### 📋 Entrega
 - [x] **Branch:** O código está na branch chamada `segunda_entrega`.
-- [ ] **Repositório:** A raiz do projeto Angular está na raiz do repositório (sem subpastas).
+- [x] **Repositório:** A raiz do projeto Angular está na raiz do repositório (sem subpastas).
 - [x] **Arquivos Ignorados:** Pastas `node_modules` e `dist` **não** foram enviadas.
-- [ ] **Vídeo:** Link do vídeo (Max 5 min) demonstrando o código e a aplicação rodando.
-- [ ] **Arquivo Final:** Arquivo `.txt` com os links (Repos + Vídeo).
+- [x] **Vídeo:** Link do vídeo (Max 5 min) demonstrando o código e a aplicação rodando.
+- [x] **Arquivo Final:** Arquivo `.txt` com os links (Repos + Vídeo).
 
 ### 🎥 Requisitos do Vídeo
 O vídeo deve conter:
